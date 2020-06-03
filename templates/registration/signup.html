@@ -1,0 +1,126 @@
+<head>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    <style type="text/css">
+        body {
+            background: #DADADA;
+        }
+
+        body > .grid {
+            height: 100%;
+        }
+
+        .image {
+            margin-top: -100px;
+        }
+
+        .column {
+            max-width: 400px;
+        }
+    </style>
+    <script>
+        $(document)
+            .ready(function () {
+                $('.ui.form')
+                    .form({
+                        fields: {
+                            user: {
+                                identifier: 'username',
+                                rules: [
+                                    {
+                                        type: 'empty',
+                                        prompt: 'Please enter an username'
+                                    },
+                                    {
+                                        type: 'length[4]',
+                                        prompt: 'Your username must be at least 4 characters'
+                                    }
+                                ]
+                            },
+                        }
+                    })
+                ;
+            })
+        ;
+    </script>
+</head>
+
+<body>
+
+<div class="ui small top fixed hidden menu">
+    <div class="ui container">
+        <a href="#" class="item">Home</a>
+        <a href="/checklist" class="item">Checklist</a>
+    </div>
+</div>
+
+<div class="ui middle aligned center aligned grid">
+    <div class="column">
+        <h2 class="ui green image header">
+            <img src="https://ioi2020.sg/wp-content/uploads/sites/4/2020/03/IOI-2020-Colour-Logo.png" class="image">
+            <div class="content">
+                Register in Codenak
+            </div>
+        </h2>
+        <form class="ui large form" method="post">
+            {% csrf_token %}
+            <div class="ui stacked segment">
+                <div class="two fields">
+                    <div class="field">
+                        <p class="ui left icon input"><label for="first_name"></label>
+                            <i class="user icon"></i>
+                            <input id="first_name" type="text" name="first_name" placeholder="First Name"
+                                   maxlength="100"
+                                   required>
+                        </p>
+                    </div>
+                    <div class="field">
+                        <p class="ui left icon input"><label for="last_name"></label>
+                            <i class="address book icon"></i>
+                            <input id="last_name" type="text" name="last_name" placeholder="Last Name" maxlength="100"
+                                   required>
+                        </p>
+                    </div>
+                </div>
+                <div class="field">
+                    <p class="ui left icon input"><label for="username"></label>
+                        <i class="clipboard icon"></i>
+                        <input id="username" type="text" name="username" placeholder="Username" maxlength="100"
+                               required>
+                    </p>
+                </div>
+                <div class="field">
+                    <p class="ui left icon input"><label for="password1"></label>
+                        <i class="lock icon"></i>
+                        <input type="password" name="password1" placeholder="Password" required>
+                    </p>
+                </div>
+                <div class="field">
+                    <p class="ui left icon input"><label for="password2"></label>
+                        <i class="lock open icon"></i>
+                        <input type="password" name="password2" placeholder="Confirm Password" required>
+                    </p>
+                </div>
+                <div>
+                    <button type="submit" class="ui fluid large green submit button"> Register</button>
+                </div>
+                {% if form.errors %}
+                    <div class="ui left aligned grid negative message">
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <li> {{ error|escape }}</<li>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </form>
+
+        <div class="ui message">
+            Already registered? <a href="../login">Log in</a>
+        </div>
+    </div>
+</div>
+
+</body>

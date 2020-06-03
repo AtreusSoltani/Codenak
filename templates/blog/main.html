@@ -1,0 +1,174 @@
+<head>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- Site Properties -->
+    <title>Codenak - Checklist</title>
+
+    <script>
+        $(document)
+            .ready(function () {
+                $('.overlay').visibility({
+                    type: 'fixed',
+                    offset: 80
+                });
+
+                // lazy load images
+                $('.image').visibility({
+                    type: 'image',
+                    transition: 'vertical flip in',
+                    duration: 500
+                });
+            })
+        ;
+    </script>
+
+    <style type="text/css">
+
+        body {
+            background-color: #FFFFFF;
+        }
+
+        .main.container {
+            margin-top: 2em;
+        }
+
+        .main.menu {
+            margin-top: 0em;
+            border-radius: 0;
+            border: none;
+            box-shadow: none;
+            transition: box-shadow 0.5s ease,
+        }
+
+        .overlay .menu {
+            position: relative;
+            left: 0;
+            transition: left 0.5s ease;
+        }
+
+        .main.menu.fixed {
+            background-color: #FFFFFF;
+            border: 1px solid #DDD;
+            box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .overlay.fixed .menu {
+            left: 800px;
+        }
+
+        .text.container .left.floated.image {
+            margin: 2em 2em 2em -4em;
+            color: gray;
+        }
+
+        .text.container .right.floated.image {
+            margin: 2em -4em 2em 2em;
+        }
+
+        .ui.footer.segment {
+            margin: 5em 0em 0em;
+            padding: 5em 0em;
+        }
+
+        .header.background {
+            background-color: #FFFFFF;
+            background-image: url("http://s13.picofile.com/file/8398948518/singapore_airport_biodome_rain_vortex_indoor_waterfall_wallpaper_2560x1080.jpg");
+            background-size: 100% 100%;
+            background-position: center;
+            text-align: middle;
+            margin-top: -1em;
+            margin-bottom: 3em;
+            padding: 200px;
+            border-width: 0px 0px 0px 0px;
+            border-style: solid;
+            border-color: #e5e5e5;
+            color: #FFFFFF;
+        }
+
+    </style>
+
+</head>
+
+<!DOCTYPE html>
+<html lang="en">
+<body>
+
+<div class="ui large borderless main menu">
+    <div class="ui container">
+        <a href="#" class="active item">Home</a>
+        <a href="/checklist" class="item">Checklist</a>
+        <div class="right menu">
+            <div class="ui simple dropdown item">
+                {{ request.user.first_name }}
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                    <a class="item" href="/accounts/logout?next={{ request.path }}"> Logout </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="header background"></div>
+
+<div class="pusher">
+    <div class="ui grid">
+        <div class="one wide column"></div>
+
+        <div class="ten wide column">
+            <div class="ui items">
+                {% for pst in posts %}
+                    <div class="item">
+                        <div class="content">
+                            <a class="header"> {{ pst.title }} </a>
+                            <div class="meta">
+                                <span class="stay">By <b> {{ pst.author }} </b>, </span>
+                                <span class="datetime"> {{ pst.get_date }}</span>
+                            </div>
+                            <div class="description"> DA
+                                {{ pst.body }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rating"></div>
+                    <div class="ui section divider"></div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="four wide column">
+            <h3 class="ui teal header"> Top users </h3>
+            <table class="ui teal single line table">
+                <thead>
+                <tr>
+                    <th class="fourteen wide center aligned">User</th>
+                    <th class="two wide center aligned"># Solved</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in topusers %}
+                    {% if user.0 == request.user %}
+                        <td class="center aligned positive"> {{ user.0.first_name }} {{ user.0.last_name }} </td>
+                        <td class="center aligned positive"> {{ user.1 }} </td>
+                    {% else %}
+                        <tr>
+                            <td class="center aligned"> {{ user.0.first_name }} {{ user.0.last_name }}</td>
+                            <td class="center aligned"> {{ user.1 }} </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="ui inverted vertical footer segment"></div>
+
+</body>
+</html>
